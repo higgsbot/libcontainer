@@ -16,7 +16,7 @@ class StubSubprocess():
     def __init__(self, stdout):
         self.stdout = stdout
 
-def run_code(lang, code):
+def run_code(lang, code, timeout):
     #TODO: handle a naming conflict (two containers with the same UUID)
     cuuid = str(uuid.uuid4())
     lang = lang.lower()
