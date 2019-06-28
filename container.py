@@ -5,10 +5,12 @@ import subprocess
 
 class CodeResult():
     # ccr = compiler result, cr = code result
-    def __init__(self, ccr, cr, uuid):
+    def __init__(self, ccr, cr, uuid, chroot, cc):
         self.ccr = ccr
         self.cr = cr
         self.uuid = uuid
+        self.chroot = chroot
+        self.cc = cc
 
 class StubSubprocess():
     def __init__(self, stdout):
@@ -41,6 +43,10 @@ def run_code(lang, code):
     if lang == "c":
         ccr_result = subprocess.run(['gcc', "-o", cuuid + "/a.out", cuuid + "/code" + lang_ext], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
+    cc = None
+    if lang == "c":
+        cc = "gcc"
+        
     cr_result = None
     try:
         cr_result = subprocess.run([cuuid + "/a.out"], stdout=subprocess.PIPE)
@@ -53,7 +59,7 @@ def run_code(lang, code):
     print(ccr_result.stdout)
     print(ccr_result.stderr)
     print(cr_result.stdout)
-    results = CodeResult(ccr_result.stderr.decode("utf-8").replace(cuuid+"/", ""), cr_result.stdout.decode("utf-8"), cuuid)
+    results = CodeResult(ccr_result.stderr.decode("utf-8").replace(cuuid+"/", ""), cr_result.stdout.decode("utf-8"), cuuid, False, cc)
 
     #Cleanup container folder
     try:  
