@@ -31,6 +31,8 @@ def run_code(lang, code):
     lang_ext = ""
     if lang == "c":
         lang_ext = ".c"
+    elif lang == "cxx" or lang == "cpp" or lang == "c++":
+        lang_ext = ".cpp"
 
     #Write code to run
     f = open(cuuid + "/code" + lang_ext, "w")
@@ -42,10 +44,14 @@ def run_code(lang, code):
     ccr_result = None
     if lang == "c":
         ccr_result = subprocess.run(['gcc', "-static", "-o", cuuid + "/a.out", cuuid + "/code" + lang_ext], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    elif lang == "cxx" or lang == "cpp" or lang == "c++":
+        ccr_result = subprocess.run(['g++', "-static", "-o", cuuid + "/a.out", cuuid + "/code" + lang_ext], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     cc = None
     if lang == "c":
         cc = "gcc"
+    elif lang == "cxx" or lang == "cpp" or lang == "c++":
+        cc = "g++"
         
     cr_result = None
     try:
