@@ -56,9 +56,9 @@ def run_code(lang, code):
         else:
             cr_result = StubSubprocess(b"[HiggsBot internal error]")
 
-    print(ccr_result.stdout)
-    print(ccr_result.stderr)
-    print(cr_result.stdout)
+    #print(ccr_result.stdout)
+    #print(ccr_result.stderr)
+    #print(cr_result.stdout)
     results = CodeResult(ccr_result.stderr.decode("utf-8").replace(cuuid+"/", ""), cr_result.stdout.decode("utf-8"), cuuid, True, cc)
 
     #Cleanup container folder
