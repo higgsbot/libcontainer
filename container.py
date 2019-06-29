@@ -41,7 +41,7 @@ def run_code(lang, code, timeout):
     #TODO: pass compiler output to Discord
     ccr_result = None
     if lang == "c":
-        ccr_result = subprocess.run(['gcc', "-o", cuuid + "/a.out", cuuid + "/code" + lang_ext], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        ccr_result = subprocess.run(['gcc', "-static", "-o", cuuid + "/a.out", cuuid + "/code" + lang_ext], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     cc = None
     if lang == "c":
@@ -49,7 +49,7 @@ def run_code(lang, code, timeout):
         
     cr_result = None
     try:
-        cr_result = subprocess.run([cuuid + "/a.out"], stdout=subprocess.PIPE)
+        cr_result = subprocess.run(["sudo", "chroot", cuuid, "/a.out"], stdout=subprocess.PIPE)
     except:
         if not os.path.exists(cuuid + "/a.out"):
             cr_result = StubSubprocess(b"[Compiler did not produce a binary]")
@@ -59,7 +59,7 @@ def run_code(lang, code, timeout):
     print(ccr_result.stdout)
     print(ccr_result.stderr)
     print(cr_result.stdout)
-    results = CodeResult(ccr_result.stderr.decode("utf-8").replace(cuuid+"/", ""), cr_result.stdout.decode("utf-8"), cuuid, False, cc)
+    results = CodeResult(ccr_result.stderr.decode("utf-8").replace(cuuid+"/", ""), cr_result.stdout.decode("utf-8"), cuuid, True, cc)
 
     #Cleanup container folder
     try:  
